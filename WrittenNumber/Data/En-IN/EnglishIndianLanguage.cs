@@ -1,4 +1,6 @@
-﻿namespace WrittenNumber.Models;
+﻿using WrittenNumber.Models;
+
+namespace WrittenNumber.Data.en_IN;
 
 public static class EnglishIndianLanguage
 {

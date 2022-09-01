@@ -1,6 +1,8 @@
-﻿namespace WrittenNumber.Models;
+using WrittenNumber.Models;
 
-public static class UkrainianLanguage
+namespace WrittenNumber.Data.Ru;
+
+public static class RussianLanguage
 {
     public static Language Get()
     {
@@ -10,43 +12,43 @@ public static class UkrainianLanguage
             "",
             new Dictionary<double, string>
             {
-                [0] = "нуль",
+                [0] = "ноль",
                 [1] = "один",
                 [2] = "два",
                 [3] = "три",
-                [4] = "чотири",
-                [5] = "п’ять",
-                [6] = "шість",
-                [7] = "сім",
-                [8] = "вісім",
-                [9] = "дев’ять",
+                [4] = "четыре",
+                [5] = "пять",
+                [6] = "шесть",
+                [7] = "семь",
+                [8] = "восемь",
+                [9] = "девять",
                 [10] = "десять",
-                [11] = "одинадцять",
-                [12] = "дванадцять",
-                [13] = "тринадцять",
-                [14] = "чотирнадцять",
-                [15] = "п’ятнадцять",
-                [16] = "шістнадцять",
-                [17] = "сімнадцять",
-                [18] = "вісімнадцять",
-                [19] = "дев’ятнадцять",
-                [20] = "двадцять",
-                [30] = "тридцять",
+                [11] = "одинадцать",
+                [12] = "двенадцать",
+                [13] = "тринадцать",
+                [14] = "четырнадцать",
+                [15] = "пятнадцать",
+                [16] = "шестнадцать",
+                [17] = "семнадцать",
+                [18] = "восемнадцать",
+                [19] = "девятнадцать",
+                [20] = "двадцать",
+                [30] = "тридцать",
                 [40] = "сорок",
-                [50] = "п’ятдесят",
-                [60] = "шістдесят",
-                [70] = "сімдесят",
-                [80] = "вісімдесят",
-                [90] = "дев’яносто",
+                [50] = "пятьдесят",
+                [60] = "шестьдесят",
+                [70] = "семьдесят",
+                [80] = "восемьдесят",
+                [90] = "девяносто",
                 [100] = "сто",
-                [200] = "двісті",
+                [200] = "двести",
                 [300] = "триста",
-                [400] = "чотириста",
-                [500] = "п’ятсот",
-                [600] = "шістсот",
-                [700] = "сімсот",
-                [800] = "вісімсот",
-                [900] = "дев’ятсот"
+                [400] = "четыреста",
+                [500] = "пятьсот",
+                [600] = "шестьсот",
+                [700] = "семьсот",
+                [800] = "восемьсот",
+                [900] = "девятьсот"
             },
             alternativeBase: new Dictionary<string, Dictionary<double, string>>
             {
@@ -65,8 +67,8 @@ public static class UkrainianLanguage
                 },
                 new LanguageUnit
                 {
-                    Few = "тисячі",
-                    Plural = "тисяч",
+                    Few = "тысячи",
+                    Plural = "тысяч",
                     UseAlternativeBase = "feminine",
                     UseSingularEnding = true,
                     UseFewEnding = true,
@@ -76,12 +78,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "тисяча"
+                    Singular = "тысяча"
                 },
                 new LanguageUnit
                 {
-                    Few = "мільйони",
-                    Plural = "мільйонів",
+                    Few = "миллиона",
+                    Plural = "миллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -90,12 +92,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "мільйон"
+                    Singular = "миллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "мільярди",
-                    Plural = "мільярдів",
+                    Few = "миллиарда",
+                    Plural = "миллиардов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -104,12 +106,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "мільярд"
+                    Singular = "миллиард"
                 },
                 new LanguageUnit
                 {
-                    Few = "трильйони",
-                    Plural = "трильйонів",
+                    Few = "триллиона",
+                    Plural = "триллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -118,12 +120,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "трильйон"
+                    Singular = "триллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "квадрильйони",
-                    Plural = "квадрильйонів",
+                    Few = "квадриллион",
+                    Plural = "квадрилон",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -132,12 +134,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "квадрильйон"
+                    Singular = "квадрильон"
                 },
                 new LanguageUnit
                 {
-                    Few = "квінтильйони",
-                    Plural = "квінтильйонів",
+                    Few = "секстильона",
+                    Plural = "секстиллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -146,12 +148,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "квінтильйон"
+                    Singular = "секстиллионов"
                 },
                 new LanguageUnit
                 {
-                    Few = "секстильйони",
-                    Plural = "секстильйонів",
+                    Few = "септиллиона",
+                    Plural = "септиллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -160,12 +162,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "секстильйон"
+                    Singular = "септиллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "септілліони",
-                    Plural = "септілліонів",
+                    Few = "октиллиона",
+                    Plural = "октиллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -174,12 +176,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "септілліон"
+                    Singular = "октиллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "октілліони",
-                    Plural = "октілліонів",
+                    Few = "нониллиона",
+                    Plural = "нониллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -188,12 +190,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "октілліон"
+                    Singular = "нониллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "нонілліони",
-                    Plural = "нонілліонів",
+                    Few = "дециллиона",
+                    Plural = "дециллионов",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -202,12 +204,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "нонілліон"
+                    Singular = "дециллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "децілліони",
-                    Plural = "децілліонів",
+                    Few = "ундециллиона",
+                    Plural = "ундециллионив",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -216,12 +218,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "децілліон"
+                    Singular = "ундециллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "ундецілліони",
-                    Plural = "ундецілліонів",
+                    Few = "дуодециллиона",
+                    Plural = "дуодециллионив",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -230,12 +232,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "ундецілліон"
+                    Singular = "дуодециллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "дуодецілліони",
-                    Plural = "дуодецілліонів",
+                    Few = "тредециллиона",
+                    Plural = "тредециллионив",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -244,12 +246,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "дуодецілліон"
+                    Singular = "тредециллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "тредецілліони",
-                    Plural = "тредецілліонів",
+                    Few = "кватуордециллиона",
+                    Plural = "кватуордециллионив",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -258,12 +260,12 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "тредецілліон"
+                    Singular = "кватуордециллион"
                 },
                 new LanguageUnit
                 {
-                    Few = "кватуордецілліони",
-                    Plural = "кватуордецілліонів",
+                    Few = "квиндециллиона",
+                    Plural = "квиндециллионив",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -272,22 +274,11 @@ public static class UkrainianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "кватуордецілліон"
-                },
-                new LanguageUnit
-                {
-                    Few = "квіндецілліони",
-                    Plural = "квіндецілліонів",
-                    UseSingularEnding = true,
-                    UseFewEnding = true,
-                    AvoidEndingRules = new List<double>
-                    {
-                        11, 12, 13, 14, 111, 112, 113, 114, 211, 212, 213, 214, 311, 312, 313, 314, 411, 412, 413, 414,
-                        511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
-                        914
-                    },
-                    Singular = "квіндецілліон"
+                    Singular = "квиндециллион"
                 }
-            });
+            })
+        {
+            UnitExceptions = new Dictionary<double, string>()
+        };
     }
 }

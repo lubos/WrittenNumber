@@ -1,12 +1,14 @@
-﻿namespace WrittenNumber.Models;
+﻿using WrittenNumber.Models;
 
-public static class pt_PortugueseLanguage
+namespace WrittenNumber.Data.Pt_PT;
+
+public static class PortugueseLanguage
 {
     public static Language Get()
     {
         return new Language(
             alternativeBase: null,
-            useLongScale: false,
+            useLongScale: true,
             baseSeparator: " e ",
             unitSeparator: "e ",
             @base: new Dictionary<double, string>
@@ -27,10 +29,10 @@ public static class pt_PortugueseLanguage
                 [13] = "treze",
                 [14] = "catorze",
                 [15] = "quinze",
-                [16] = "dezesseis",
-                [17] = "dezessete",
+                [16] = "dezasseis",
+                [17] = "dezassete",
                 [18] = "dezoito",
-                [19] = "dezenove",
+                [19] = "dezanove",
                 [20] = "vinte",
                 [30] = "trinta",
                 [40] = "quarenta",
@@ -79,63 +81,48 @@ public static class pt_PortugueseLanguage
                 },
                 new LanguageUnit
                 {
-                    Plural = "bilhões",
-                    Singular = "bilhão"
+                    Plural = "biliões",
+                    Singular = "bilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "trilhões",
-                    Singular = "trilhão"
+                    Plural = "triliões",
+                    Singular = "trilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "quadrilhão",
-                    Singular = "quadrilhão"
+                    Plural = "quadriliões",
+                    Singular = "quadrilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "quintilhões",
-                    Singular = "quintilhão"
+                    Plural = "quintiliões",
+                    Singular = "quintilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "sextilhões",
-                    Singular = "sextilhão"
+                    Plural = "sextiliões",
+                    Singular = "sextilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "septilhões",
-                    Singular = "septilhão"
+                    Plural = "septiliões",
+                    Singular = "septilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "octilhões",
-                    Singular = "octilhão"
+                    Plural = "octiliões",
+                    Singular = "octilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "nonilhões",
-                    Singular = "nonilhão"
+                    Plural = "noniliões",
+                    Singular = "nonilião"
                 },
                 new LanguageUnit
                 {
-                    Plural = "decilhões",
-                    Singular = "decilhão"
-                },
-                new LanguageUnit
-                {
-                    Plural = "undecilhões",
-                    Singular = "undecilhão"
-                },
-                new LanguageUnit
-                {
-                    Plural = "doudecilhões",
-                    Singular = "doudecilhão"
-                },
-                new LanguageUnit
-                {
-                    Plural = "tredecilhões",
-                    Singular = "tredecilhão"
+                    Plural = "deciliões",
+                    Singular = "decilião"
                 }
             })
         {
@@ -143,6 +130,7 @@ public static class pt_PortugueseLanguage
             {
                 [1] = "um"
             },
+
             AndWhenTrailing = true
         };
     }

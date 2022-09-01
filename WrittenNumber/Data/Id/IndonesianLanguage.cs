@@ -1,4 +1,6 @@
-﻿namespace WrittenNumber.Models;
+﻿using WrittenNumber.Models;
+
+namespace WrittenNumber.Data.Id;
 
 public static class IndonesianLanguage
 {

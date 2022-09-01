@@ -19,31 +19,13 @@ public static class NumberExtension
     static NumberExtension()
     {
         for (var i = 1; i <= 16; i++) _shortScale.Add(Math.Pow(10, i * 3));
-
         for (var i = 1; i <= 15; i++) _longScale.Add(Math.Pow(10, i * 6));
-    }
-
-    private static string HandleSmallerThan100(double n, Language language, Dictionary<double, string>? baseCardinals,
-        Dictionary<double, string>? alternativeBaseCardinals, Option options)
-    {
-        var dec = Math.Floor(n / 10) * 10;
-        var unit = n - dec;
-
-        var baseValue = alternativeBaseCardinals != null && alternativeBaseCardinals.ContainsKey(dec)
-            ? alternativeBaseCardinals[dec]
-            : baseCardinals != null && baseCardinals.ContainsKey(dec)
-                ? baseCardinals[dec]
-                : "";
-        if (unit != 0) return baseValue + language.BaseSeparator + unit.WrittenNumber(options);
-
-        return baseValue;
-    }
+    }    
 
     public static string WrittenNumber(this string n, Option option)
     {
-        if (double.TryParse(n, out var value))
-            return WrittenNumber(Convert.ToDouble(value), option);
-        return "";
+        if (double.TryParse(n, out var value)) return WrittenNumber(Convert.ToDouble(value), option);
+        return string.Empty;
     }
 
     public static string WrittenNumber(this uint n, Option option)
@@ -65,42 +47,28 @@ public static class NumberExtension
     {
         try
         {
-            if (n < 0) return "";
+            if (n < 0) return string.Empty;
 
             n = Math.Round(+n);
 
-            Language? language = null;
-
-            if (option.Lang is string lang)
+            var language = option.Lang switch
             {
-                if (!string.IsNullOrEmpty(lang))
-                    language = lang switch
-                    {
-                        "es" => SpanishLanguage.Get(),
-                        "ar" => ArabicLanguage.Get(),
-                        "az" => AzerbaijaniLanguage.Get(),
-                        "pt" => pt_PortugueseLanguage.Get(),
-                        "ptPT" => PortugueseLanguage.Get(),
-                        "fr" => FrenchLanguage.Get(),
-                        "eo" => EsperantoLanguage.Get(),
-                        "it" => ItalianLanguage.Get(),
-                        "vi" => VietnameseLanguage.Get(),
-                        "tr" => TurkishLanguage.Get(),
-                        "hu" => HungaraianLangauge.Get(),
-                        "enIndian" => EnglishIndianLanguage.Get(),
-                        "uk" => UkrainianLanguage.Get(),
-                        "ru" => RussianLanguage.Get(),
-                        "id" => IndonesianLanguage.Get(),
-                        _ => EnglishLanguage.Get()
-                    };
-                else
-                    throw new ArgumentException(nameof(option.Lang));
-            }
-            else if (option.Lang is Language customLanguage)
-            {
-                if (customLanguage != null) throw new ArgumentException(nameof(option.Lang));
-                language = customLanguage;
-            }
+                "es" => Data.Es.SpanishLanguage.Get(),
+                "ar" => Data.Ar.ArabicLanguage.Get(),
+                "az" => Data.az.AzerbaijaniLanguage.Get(),
+                "pt" => Data.Pt.pt_PortugueseLanguage.Get(),
+                "pt-PT" => Data.Pt_PT.PortugueseLanguage.Get(),
+                "fr" => Data.Fr.FrenchLanguage.Get(),
+                "it" => Data.It.ItalianLanguage.Get(),
+                "vi" => Data.Vi.VietnameseLanguage.Get(),
+                "tr" => Data.Tr.TurkishLanguage.Get(),
+                "hu" => Data.Hu.HungaraianLangauge.Get(),
+                "en-ID" => Data.en_IN.EnglishIndianLanguage.Get(),
+                "uk" => Data.Uk.UkrainianLanguage.Get(),
+                "ru" => Data.Ru.RussianLanguage.Get(),
+                "id" => Data.Id.IndonesianLanguage.Get(),
+                _ => Data.en.EnglishLanguage.Get()
+            };
 
             var scale = language!.UseLongScale ? _longScale : _shortScale;
             var units = new List<object>();
@@ -139,26 +107,17 @@ public static class NumberExtension
                     ? language.AlternativeBase[option.AlternativeBase]
                     : null;
 
-            if (language.UnitExceptions is Dictionary<double, string> unitExceptionDict &&
-                unitExceptionDict.ContainsKey(n)) return unitExceptionDict[n];
-            if (alternativeBaseCardinals is Dictionary<double, string> alternativeBaseCardinalsDict &&
-                alternativeBaseCardinalsDict.ContainsKey(n)) return alternativeBaseCardinalsDict[n];
+            if (language.UnitExceptions is Dictionary<double, string> unitExceptionDict && unitExceptionDict.ContainsKey(n)) return unitExceptionDict[n];
+            if (alternativeBaseCardinals is Dictionary<double, string> alternativeBaseCardinalsDict && alternativeBaseCardinalsDict.ContainsKey(n)) return alternativeBaseCardinalsDict[n];
             if (baseCardinals.ContainsKey(n) && !string.IsNullOrEmpty(baseCardinals[n])) return baseCardinals[n];
-            if (n < 100)
-                return HandleSmallerThan100(n, language, baseCardinals, alternativeBaseCardinals, option);
+            if (n < 100) return HandleSmallerThan100(n, language, baseCardinals, alternativeBaseCardinals, option);
 
             var m = n % 100;
             var ret = new List<string>();
             if (m != 0)
             {
-                if (
-                    option.NoAnd &&
-                    !(language.AndException.HasValue &&
-                      language.AndException.Value)
-                )
-                    ret.Add(m.WrittenNumber(option));
-                else
-                    ret.Add(language.UnitSeparator + m.WrittenNumber(option));
+                if (option.NoAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
+                else ret.Add(language.UnitSeparator + m.WrittenNumber(option));
             }
 
             double firstSignificant = 0;
@@ -284,7 +243,7 @@ public static class NumberExtension
                             AlternativeBase = languageUnitCheck.UseAlternativeBase,
                             Lang = option.Lang
                         });
-                else number = "";
+                else number = string.Empty;
                 n -= r * scale[i];
                 ret.Add(number + " " + str);
             }
@@ -292,17 +251,12 @@ public static class NumberExtension
             var firstSignificantN = firstSignificant * Math.Floor(n / firstSignificant);
             var rest = n - firstSignificantN;
 
-            if (
-                language.AndWhenTrailing == true &&
-                firstSignificant != 0 &&
-                0 < rest &&
-                ret[0].IndexOf(language.UnitSeparator) != 0
-            )
+            if (language.AndWhenTrailing == true && firstSignificant != 0 && 0 < rest && ret[0].IndexOf(language.UnitSeparator) != 0)
             {
                 var a = new List<string>
                 {
                     ret[0],
-                    Regex.Replace(language.UnitSeparator, @"\s+", "")
+                    Regex.Replace(language.UnitSeparator, @"\s+", string.Empty)
                 };
                 ret.RemoveAt(0);
                 a.AddRange(ret);
@@ -310,8 +264,12 @@ public static class NumberExtension
             }
 
             if (!string.IsNullOrEmpty(language.AllSeparator))
+            {
                 for (var j = 0; j < ret.Count - 1; j++)
+                {
                     ret[j] = language.AllSeparator + ret[j];
+                }
+            }
             ret.Reverse();
             var result = string.Join(" ", ret.ToArray());
             return result;
@@ -321,5 +279,20 @@ public static class NumberExtension
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    private static string HandleSmallerThan100(double n, Language language, Dictionary<double, string>? baseCardinals, Dictionary<double, string>? alternativeBaseCardinals, Option options)
+    {
+        var dec = Math.Floor(n / 10) * 10;
+        var unit = n - dec;
+
+        var baseValue = alternativeBaseCardinals != null && alternativeBaseCardinals.ContainsKey(dec)
+            ? alternativeBaseCardinals[dec]
+            : baseCardinals != null && baseCardinals.ContainsKey(dec)
+                ? baseCardinals[dec]
+                : string.Empty;
+        if (unit != 0) return baseValue + language.BaseSeparator + unit.WrittenNumber(options);
+
+        return baseValue;
     }
 }

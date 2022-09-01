@@ -10,7 +10,7 @@ public class EnglishIndianLanguageTest
     {
         _option = new Option
         {
-            Lang = "enIndian"
+            Lang = "en-ID"
         };
     }
 

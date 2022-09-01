@@ -2,13 +2,7 @@
 
 public class Language
 {
-    public Language(
-        bool useLongScale,
-        string baseSeparator,
-        string unitSeparator,
-        Dictionary<double, string> @base,
-        object units,
-        Dictionary<string, Dictionary<double, string>>? alternativeBase)
+    public Language(bool useLongScale, string baseSeparator, string unitSeparator, Dictionary<double, string> @base, object units, Dictionary<string, Dictionary<double, string>>? alternativeBase)
     {
         UseLongScale = useLongScale;
         BaseSeparator = baseSeparator;

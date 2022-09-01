@@ -1,6 +1,8 @@
-namespace WrittenNumber.Models;
+﻿using WrittenNumber.Models;
 
-public static class RussianLanguage
+namespace WrittenNumber.Data.Uk;
+
+public static class UkrainianLanguage
 {
     public static Language Get()
     {
@@ -10,43 +12,43 @@ public static class RussianLanguage
             "",
             new Dictionary<double, string>
             {
-                [0] = "ноль",
+                [0] = "нуль",
                 [1] = "один",
                 [2] = "два",
                 [3] = "три",
-                [4] = "четыре",
-                [5] = "пять",
-                [6] = "шесть",
-                [7] = "семь",
-                [8] = "восемь",
-                [9] = "девять",
+                [4] = "чотири",
+                [5] = "п’ять",
+                [6] = "шість",
+                [7] = "сім",
+                [8] = "вісім",
+                [9] = "дев’ять",
                 [10] = "десять",
-                [11] = "одинадцать",
-                [12] = "двенадцать",
-                [13] = "тринадцать",
-                [14] = "четырнадцать",
-                [15] = "пятнадцать",
-                [16] = "шестнадцать",
-                [17] = "семнадцать",
-                [18] = "восемнадцать",
-                [19] = "девятнадцать",
-                [20] = "двадцать",
-                [30] = "тридцать",
+                [11] = "одинадцять",
+                [12] = "дванадцять",
+                [13] = "тринадцять",
+                [14] = "чотирнадцять",
+                [15] = "п’ятнадцять",
+                [16] = "шістнадцять",
+                [17] = "сімнадцять",
+                [18] = "вісімнадцять",
+                [19] = "дев’ятнадцять",
+                [20] = "двадцять",
+                [30] = "тридцять",
                 [40] = "сорок",
-                [50] = "пятьдесят",
-                [60] = "шестьдесят",
-                [70] = "семьдесят",
-                [80] = "восемьдесят",
-                [90] = "девяносто",
+                [50] = "п’ятдесят",
+                [60] = "шістдесят",
+                [70] = "сімдесят",
+                [80] = "вісімдесят",
+                [90] = "дев’яносто",
                 [100] = "сто",
-                [200] = "двести",
+                [200] = "двісті",
                 [300] = "триста",
-                [400] = "четыреста",
-                [500] = "пятьсот",
-                [600] = "шестьсот",
-                [700] = "семьсот",
-                [800] = "восемьсот",
-                [900] = "девятьсот"
+                [400] = "чотириста",
+                [500] = "п’ятсот",
+                [600] = "шістсот",
+                [700] = "сімсот",
+                [800] = "вісімсот",
+                [900] = "дев’ятсот"
             },
             alternativeBase: new Dictionary<string, Dictionary<double, string>>
             {
@@ -65,8 +67,8 @@ public static class RussianLanguage
                 },
                 new LanguageUnit
                 {
-                    Few = "тысячи",
-                    Plural = "тысяч",
+                    Few = "тисячі",
+                    Plural = "тисяч",
                     UseAlternativeBase = "feminine",
                     UseSingularEnding = true,
                     UseFewEnding = true,
@@ -76,12 +78,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "тысяча"
+                    Singular = "тисяча"
                 },
                 new LanguageUnit
                 {
-                    Few = "миллиона",
-                    Plural = "миллионов",
+                    Few = "мільйони",
+                    Plural = "мільйонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -90,12 +92,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "миллион"
+                    Singular = "мільйон"
                 },
                 new LanguageUnit
                 {
-                    Few = "миллиарда",
-                    Plural = "миллиардов",
+                    Few = "мільярди",
+                    Plural = "мільярдів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -104,12 +106,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "миллиард"
+                    Singular = "мільярд"
                 },
                 new LanguageUnit
                 {
-                    Few = "триллиона",
-                    Plural = "триллионов",
+                    Few = "трильйони",
+                    Plural = "трильйонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -118,12 +120,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "триллион"
+                    Singular = "трильйон"
                 },
                 new LanguageUnit
                 {
-                    Few = "квадриллион",
-                    Plural = "квадрилон",
+                    Few = "квадрильйони",
+                    Plural = "квадрильйонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -132,12 +134,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "квадрильон"
+                    Singular = "квадрильйон"
                 },
                 new LanguageUnit
                 {
-                    Few = "секстильона",
-                    Plural = "секстиллионов",
+                    Few = "квінтильйони",
+                    Plural = "квінтильйонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -146,12 +148,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "секстиллионов"
+                    Singular = "квінтильйон"
                 },
                 new LanguageUnit
                 {
-                    Few = "септиллиона",
-                    Plural = "септиллионов",
+                    Few = "секстильйони",
+                    Plural = "секстильйонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -160,12 +162,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "септиллион"
+                    Singular = "секстильйон"
                 },
                 new LanguageUnit
                 {
-                    Few = "октиллиона",
-                    Plural = "октиллионов",
+                    Few = "септілліони",
+                    Plural = "септілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -174,12 +176,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "октиллион"
+                    Singular = "септілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "нониллиона",
-                    Plural = "нониллионов",
+                    Few = "октілліони",
+                    Plural = "октілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -188,12 +190,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "нониллион"
+                    Singular = "октілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "дециллиона",
-                    Plural = "дециллионов",
+                    Few = "нонілліони",
+                    Plural = "нонілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -202,12 +204,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "дециллион"
+                    Singular = "нонілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "ундециллиона",
-                    Plural = "ундециллионив",
+                    Few = "децілліони",
+                    Plural = "децілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -216,12 +218,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "ундециллион"
+                    Singular = "децілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "дуодециллиона",
-                    Plural = "дуодециллионив",
+                    Few = "ундецілліони",
+                    Plural = "ундецілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -230,12 +232,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "дуодециллион"
+                    Singular = "ундецілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "тредециллиона",
-                    Plural = "тредециллионив",
+                    Few = "дуодецілліони",
+                    Plural = "дуодецілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -244,12 +246,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "тредециллион"
+                    Singular = "дуодецілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "кватуордециллиона",
-                    Plural = "кватуордециллионив",
+                    Few = "тредецілліони",
+                    Plural = "тредецілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -258,12 +260,12 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "кватуордециллион"
+                    Singular = "тредецілліон"
                 },
                 new LanguageUnit
                 {
-                    Few = "квиндециллиона",
-                    Plural = "квиндециллионив",
+                    Few = "кватуордецілліони",
+                    Plural = "кватуордецілліонів",
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>
@@ -272,11 +274,22 @@ public static class RussianLanguage
                         511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
                         914
                     },
-                    Singular = "квиндециллион"
+                    Singular = "кватуордецілліон"
+                },
+                new LanguageUnit
+                {
+                    Few = "квіндецілліони",
+                    Plural = "квіндецілліонів",
+                    UseSingularEnding = true,
+                    UseFewEnding = true,
+                    AvoidEndingRules = new List<double>
+                    {
+                        11, 12, 13, 14, 111, 112, 113, 114, 211, 212, 213, 214, 311, 312, 313, 314, 411, 412, 413, 414,
+                        511, 512, 513, 514, 611, 612, 613, 614, 711, 712, 713, 714, 811, 812, 813, 814, 911, 912, 913,
+                        914
+                    },
+                    Singular = "квіндецілліон"
                 }
-            })
-        {
-            UnitExceptions = new Dictionary<double, string>()
-        };
+            });
     }
 }

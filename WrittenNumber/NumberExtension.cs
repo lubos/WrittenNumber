@@ -276,7 +276,11 @@ public static class NumberExtension
 
             if (currencies.TryGetValue(option.Currency, out Currency currency))
             {
-                return s+" "+currency.Get(value);
+                return s + " " + currency.Get(value);
+            }
+            else
+            {
+                return s + " " + option.Currency;
             }
         }
         return s;

@@ -2,5 +2,6 @@
 
 public class Option
 {
-    public string Lang { get; set; } = "en";
+    public string Language { get; set; } = "en";
+    public string? Currency { get; set; }
 }

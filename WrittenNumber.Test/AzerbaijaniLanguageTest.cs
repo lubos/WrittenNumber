@@ -10,7 +10,7 @@ public class AzerbaijaniLanguageTest
     {
         _option = new Option
         {
-            Lang = "az"
+            Language = "az"
         };
     }
 

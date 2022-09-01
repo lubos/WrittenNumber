@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrittenNumber", "WrittenNum
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrittenNumber.Test", "WrittenNumber.Test\WrittenNumber.Test.csproj", "{20357B8F-C9D4-49A9-A452-6A043912524D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrittenNumberCldrPull", "WrittenNumberCldrPull\WrittenNumberCldrPull.csproj", "{2BE379CC-561F-418A-81BA-CD536B1A5776}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{20357B8F-C9D4-49A9-A452-6A043912524D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20357B8F-C9D4-49A9-A452-6A043912524D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20357B8F-C9D4-49A9-A452-6A043912524D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BE379CC-561F-418A-81BA-CD536B1A5776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BE379CC-561F-418A-81BA-CD536B1A5776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BE379CC-561F-418A-81BA-CD536B1A5776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BE379CC-561F-418A-81BA-CD536B1A5776}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

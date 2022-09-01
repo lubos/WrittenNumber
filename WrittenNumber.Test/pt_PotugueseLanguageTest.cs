@@ -10,7 +10,7 @@ public class pt_PotugueseLanguageTest
     {
         _option = new Option
         {
-            Lang = "pt"
+            Language = "pt"
         };
     }
 

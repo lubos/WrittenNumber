@@ -10,7 +10,7 @@ public class IndoneisanLanguageTest
     {
         _option = new Option
         {
-            Lang = "id"
+            Language = "id"
         };
     }
 

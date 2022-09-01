@@ -24,7 +24,7 @@ public static class NumberExtension
 
     public static string WrittenNumber(this string n, Option option)
     {
-        if (long.TryParse(n, out var value)) return WrittenNumber(Convert.ToInt64(value), option);
+        if (long.TryParse(n, out var value)) return WrittenNumber(value, option);
         return string.Empty;
     }
 
@@ -45,14 +45,14 @@ public static class NumberExtension
 
     public static string WrittenNumber(this long n, Option option)
     {
-        return WrittenNumber(Convert.ToInt64(n), option, false, null);
+        return AppendCurrency(WrittenNumber(n, option, false, null), n, option);
     }
 
     private static string WrittenNumber(this long n, Option option, bool noAnd, Dictionary<long, string>? alternativeBase)
     {
         if (n < 0) return string.Empty;
 
-        var language = option.Lang switch
+        var language = option.Language switch
         {
             "es" => Data.Es.SpanishLanguage.Get(),
             "ar" => Data.Ar.ArabicLanguage.Get(),
@@ -113,8 +113,8 @@ public static class NumberExtension
         var ret = new List<string>();
         if (m != 0)
         {
-            if (noAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
-            else ret.Add(language.UnitSeparator + m.WrittenNumber(option));
+            if (noAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option, false, null));
+            else ret.Add(language.UnitSeparator + m.WrittenNumber(option, false, null));
         }
 
         double firstSignificant = 0;
@@ -222,7 +222,7 @@ public static class NumberExtension
                     r,
                     new Option
                     {
-                        Lang = option.Lang
+                        Language = option.Language
                     },
                     !(language.AndException.HasValue && language.AndException.Value),
                     null);
@@ -231,7 +231,7 @@ public static class NumberExtension
                     r,
                     new Option
                     {
-                        Lang = option.Lang
+                        Language = option.Language
                     },
                     !((language.AndException.HasValue && language.AndException.Value) || (languageUnitCheck.AndException.HasValue && languageUnitCheck.AndException.Value)),
                     languageUnitCheck.AlternativeBase);
@@ -264,7 +264,22 @@ public static class NumberExtension
         }
         ret.Reverse();
         var result = string.Join(" ", ret.ToArray());
+
         return result;
+    }
+
+    private static string AppendCurrency(string s, long value, Option option)
+    {
+        if (option.Currency != null)
+        {
+            var currencies = Currencies.Get(option.Language);
+
+            if (currencies.TryGetValue(option.Currency, out Currency currency))
+            {
+                return s+" "+currency.Get(value);
+            }
+        }
+        return s;
     }
 
     private static string HandleSmallerThan100(long n, Language language, Dictionary<long, string>? baseCardinals, Dictionary<long, string>? alternativeBaseCardinals, Option options)
@@ -277,7 +292,7 @@ public static class NumberExtension
             : baseCardinals != null && baseCardinals.ContainsKey(dec)
                 ? baseCardinals[dec]
                 : string.Empty;
-        if (unit != 0) return baseValue + language.BaseSeparator + unit.WrittenNumber(options);
+        if (unit != 0) return baseValue + language.BaseSeparator + unit.WrittenNumber(options, false, null);
 
         return baseValue;
     }

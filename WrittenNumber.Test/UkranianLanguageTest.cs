@@ -10,7 +10,7 @@ public class UkranianLanguageTest
     {
         _option = new Option
         {
-            Lang = "uk"
+            Language = "uk"
         };
     }
 

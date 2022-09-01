@@ -10,7 +10,7 @@ public class RussianLanguageTest
     {
         _option = new Option
         {
-            Lang = "ru"
+            Language = "ru"
         };
     }
 

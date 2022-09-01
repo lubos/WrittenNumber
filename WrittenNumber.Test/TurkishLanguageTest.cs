@@ -10,7 +10,7 @@ public class TurkishLanguageTest
     {
         _option = new Option
         {
-            Lang = "tr"
+            Language = "tr"
         };
     }
 

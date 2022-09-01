@@ -7,11 +7,10 @@ public static class FrenchLanguage
     public static Language Get()
     {
         return new Language(
-            alternativeBase: null,
             useLongScale: false,
             baseSeparator: "-",
             unitSeparator: "",
-            @base: new Dictionary<double, string>
+            @base: new Dictionary<long, string>
             {
                 [0] = "zéro",
                 [1] = "un",

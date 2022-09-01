@@ -10,7 +10,7 @@ public static class UkrainianLanguage
             false,
             " ",
             "",
-            new Dictionary<double, string>
+            new Dictionary<long, string>
             {
                 [0] = "нуль",
                 [1] = "один",
@@ -50,14 +50,6 @@ public static class UkrainianLanguage
                 [800] = "вісімсот",
                 [900] = "дев’ятсот"
             },
-            alternativeBase: new Dictionary<string, Dictionary<double, string>>
-            {
-                ["feminine"] = new()
-                {
-                    [1] = "одна",
-                    [2] = "дві"
-                }
-            },
             units: new List<object>
             {
                 new LanguageUnit
@@ -69,7 +61,11 @@ public static class UkrainianLanguage
                 {
                     Few = "тисячі",
                     Plural = "тисяч",
-                    UseAlternativeBase = "feminine",
+                    AlternativeBase = new Dictionary<long, string>()
+                    {
+                        [1] = "одна",
+                        [2] = "дві"
+                    },
                     UseSingularEnding = true,
                     UseFewEnding = true,
                     AvoidEndingRules = new List<double>

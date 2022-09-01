@@ -45,6 +45,11 @@ public static class NumberExtension
 
     public static string WrittenNumber(this long n, Option option)
     {
+        return WrittenNumber(Convert.ToInt64(n), option, null);
+    }
+
+    private static string WrittenNumber(this long n, Option option, Dictionary<long, string>? alternativeBase)
+    {
         if (n < 0) return string.Empty;
 
         var language = option.Lang switch
@@ -98,12 +103,11 @@ public static class NumberExtension
         }
 
         var baseCardinals = language.Base;
-        var alternativeBaseCardinals = !string.IsNullOrEmpty(option.AlternativeBase) && language.AlternativeBase != null ? language.AlternativeBase[option.AlternativeBase] : null;
 
         if (language.UnitExceptions is Dictionary<double, string> unitExceptionDict && unitExceptionDict.ContainsKey(n)) return unitExceptionDict[n];
-        if (alternativeBaseCardinals is Dictionary<double, string> alternativeBaseCardinalsDict && alternativeBaseCardinalsDict.ContainsKey(n)) return alternativeBaseCardinalsDict[n];
+        if (alternativeBase != null && alternativeBase.ContainsKey(n)) return alternativeBase[n];
         if (baseCardinals.ContainsKey(n) && !string.IsNullOrEmpty(baseCardinals[n])) return baseCardinals[n];
-        if (n < 100) return HandleSmallerThan100(n, language, baseCardinals, alternativeBaseCardinals, option);
+        if (n < 100) return HandleSmallerThan100(n, language, baseCardinals, alternativeBase, option);
 
         var m = n % 100;
         var ret = new List<string>();
@@ -137,9 +141,9 @@ public static class NumberExtension
                          !languageUnit.UseBaseExceptionWhenNoTrailingNumbers.Value ||
                          (i == 0 && ret.Any()));
                     if (!shouldUseBaseException)
-                        ret.Add(alternativeBaseCardinals != null &&
-                                alternativeBaseCardinals.ContainsKey(r * scale[i])
-                            ? alternativeBaseCardinals[r * scale[i]]
+                        ret.Add(alternativeBase != null &&
+                                alternativeBase.ContainsKey(r * scale[i])
+                            ? alternativeBase[r * scale[i]]
                             : baseCardinals[r * scale[i]]);
                     else
                         ret.Add(r > 1 && !string.IsNullOrEmpty(languageUnit.Plural)
@@ -218,9 +222,7 @@ public static class NumberExtension
                     r,
                     new Option
                     {
-                        NoAnd = !(language.AndException.HasValue &&
-                                  language.AndException.Value) && true,
-                        AlternativeBase = null,
+                        NoAnd = !(language.AndException.HasValue && language.AndException.Value),
                         Lang = option.Lang
                     });
             else if (units[i] is LanguageUnit languageUnitCheck)
@@ -228,13 +230,10 @@ public static class NumberExtension
                     r,
                     new Option
                     {
-                        NoAnd = !((language.AndException.HasValue &&
-                                   language.AndException.Value) ||
-                                  (languageUnitCheck.AndException.HasValue &&
-                                   languageUnitCheck.AndException.Value)) && true,
-                        AlternativeBase = languageUnitCheck.UseAlternativeBase,
+                        NoAnd = !((language.AndException.HasValue && language.AndException.Value) || (languageUnitCheck.AndException.HasValue && languageUnitCheck.AndException.Value)),
                         Lang = option.Lang
-                    });
+                    },
+                    languageUnitCheck.AlternativeBase);
             else number = string.Empty;
             n -= r * scale[i];
             ret.Add(number + " " + str);
@@ -267,7 +266,7 @@ public static class NumberExtension
         return result;
     }
 
-    private static string HandleSmallerThan100(long n, Language language, Dictionary<double, string>? baseCardinals, Dictionary<double, string>? alternativeBaseCardinals, Option options)
+    private static string HandleSmallerThan100(long n, Language language, Dictionary<long, string>? baseCardinals, Dictionary<long, string>? alternativeBaseCardinals, Option options)
     {
         var dec = n / 10 * 10;
         var unit = n - dec;

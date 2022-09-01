@@ -16,6 +16,5 @@ public class LanguageUnit
     public string? Few { get; set; }
     public bool? AvoidInNumberPlural { get; set; }
     public bool? AndException { get; set; }
-    public List<double>? UsePrefixException { get; set; }
-    public string? UseAlternativeBase { get; set; }
+    public Dictionary<long, string>? AlternativeBase { get; set; }
 }

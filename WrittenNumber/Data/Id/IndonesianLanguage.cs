@@ -7,11 +7,10 @@ public static class IndonesianLanguage
     public static Language Get()
     {
         return new Language(
-            alternativeBase: null,
             useLongScale: false,
             baseSeparator: " ",
             unitSeparator: "",
-            @base: new Dictionary<double, string>
+            @base: new Dictionary<long, string>
             {
                 [0] = "nol",
                 [1] = "satu",

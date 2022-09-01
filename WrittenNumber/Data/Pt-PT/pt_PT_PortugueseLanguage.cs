@@ -7,11 +7,10 @@ public static class PortugueseLanguage
     public static Language Get()
     {
         return new Language(
-            alternativeBase: null,
             useLongScale: true,
             baseSeparator: " e ",
             unitSeparator: "e ",
-            @base: new Dictionary<double, string>
+            @base: new Dictionary<long, string>
             {
                 [0] = "zero",
                 [1] = "um",

@@ -5,12 +5,12 @@ namespace WrittenNumber;
 
 public static class NumberExtension
 {
-    private static readonly List<double> _shortScale = new()
+    private static readonly List<long> _shortScale = new()
     {
         100
     };
 
-    private static readonly List<double> _longScale = new()
+    private static readonly List<long> _longScale = new()
     {
         100,
         1000
@@ -18,272 +18,258 @@ public static class NumberExtension
 
     static NumberExtension()
     {
-        for (var i = 1; i <= 16; i++) _shortScale.Add(Math.Pow(10, i * 3));
-        for (var i = 1; i <= 15; i++) _longScale.Add(Math.Pow(10, i * 6));
+        for (var i = 1; i <= 16; i++) _shortScale.Add((long)Math.Pow(10, i * 3));
+        for (var i = 1; i <= 15; i++) _longScale.Add((long)Math.Pow(10, i * 6));
     }    
 
     public static string WrittenNumber(this string n, Option option)
     {
-        if (double.TryParse(n, out var value)) return WrittenNumber(Convert.ToDouble(value), option);
+        if (long.TryParse(n, out var value)) return WrittenNumber(Convert.ToInt64(value), option);
         return string.Empty;
     }
 
     public static string WrittenNumber(this uint n, Option option)
     {
-        return WrittenNumber(Convert.ToDouble(n), option);
-    }
-
-    public static string WrittenNumber(this long n, Option option)
-    {
-        return WrittenNumber(Convert.ToDouble(n), option);
-    }
-
-    public static string WrittenNumber(this int n, Option option)
-    {
-        return WrittenNumber(Convert.ToDouble(n), option);
+        return WrittenNumber(Convert.ToInt64(n), option);
     }
 
     public static string WrittenNumber(this double n, Option option)
     {
-        try
+        return WrittenNumber(Convert.ToInt64(n), option);
+    }
+
+    public static string WrittenNumber(this int n, Option option)
+    {
+        return WrittenNumber(Convert.ToInt64(n), option);
+    }
+
+    public static string WrittenNumber(this long n, Option option)
+    {
+        if (n < 0) return string.Empty;
+
+        var language = option.Lang switch
         {
-            if (n < 0) return string.Empty;
+            "es" => Data.Es.SpanishLanguage.Get(),
+            "ar" => Data.Ar.ArabicLanguage.Get(),
+            "az" => Data.az.AzerbaijaniLanguage.Get(),
+            "pt" => Data.Pt.pt_PortugueseLanguage.Get(),
+            "pt-PT" => Data.Pt_PT.PortugueseLanguage.Get(),
+            "fr" => Data.Fr.FrenchLanguage.Get(),
+            "it" => Data.It.ItalianLanguage.Get(),
+            "vi" => Data.Vi.VietnameseLanguage.Get(),
+            "tr" => Data.Tr.TurkishLanguage.Get(),
+            "hu" => Data.Hu.HungaraianLangauge.Get(),
+            "en-ID" => Data.en_IN.EnglishIndianLanguage.Get(),
+            "uk" => Data.Uk.UkrainianLanguage.Get(),
+            "ru" => Data.Ru.RussianLanguage.Get(),
+            "id" => Data.Id.IndonesianLanguage.Get(),
+            _ => Data.en.EnglishLanguage.Get()
+        };
 
-            n = Math.Round(+n);
+        var scale = language.UseLongScale ? _longScale : _shortScale;
+        var units = new List<object>();
 
-            var language = option.Lang switch
+        if (language.Units is Dictionary<long, string> dictLanguageUnits)
+        {
+            var rawUnits = dictLanguageUnits;
+            scale = new List<long>(dictLanguageUnits.Keys);
+            var rawScale = new List<long>();
+            foreach (var i in scale.Select((value, i) => new { i, value }))
             {
-                "es" => Data.Es.SpanishLanguage.Get(),
-                "ar" => Data.Ar.ArabicLanguage.Get(),
-                "az" => Data.az.AzerbaijaniLanguage.Get(),
-                "pt" => Data.Pt.pt_PortugueseLanguage.Get(),
-                "pt-PT" => Data.Pt_PT.PortugueseLanguage.Get(),
-                "fr" => Data.Fr.FrenchLanguage.Get(),
-                "it" => Data.It.ItalianLanguage.Get(),
-                "vi" => Data.Vi.VietnameseLanguage.Get(),
-                "tr" => Data.Tr.TurkishLanguage.Get(),
-                "hu" => Data.Hu.HungaraianLangauge.Get(),
-                "en-ID" => Data.en_IN.EnglishIndianLanguage.Get(),
-                "uk" => Data.Uk.UkrainianLanguage.Get(),
-                "ru" => Data.Ru.RussianLanguage.Get(),
-                "id" => Data.Id.IndonesianLanguage.Get(),
-                _ => Data.en.EnglishLanguage.Get()
-            };
+                var value = i.value;
+                var index = i.i;
+                rawScale.Add((long)Math.Pow(10, Convert.ToInt32(value)));
+            }
 
-            var scale = language!.UseLongScale ? _longScale : _shortScale;
-            var units = new List<object>();
+            foreach (var (key, value) in dictLanguageUnits) units.Add(dictLanguageUnits[key]);
+            scale = rawScale;
+        }
+        else if (language.Units is List<object> languageObjectUnits)
+        {
+            units.AddRange(languageObjectUnits);
+        }
+        else if (language.Units is List<string> languageStringUnits)
+        {
+            units.AddRange(languageStringUnits);
+        }
+        else
+        {
+            throw new ArgumentException(nameof(language.Units));
+        }
 
-            if (language.Units is Dictionary<double, string> dictLanguageUnits)
+        var baseCardinals = language.Base;
+        var alternativeBaseCardinals = !string.IsNullOrEmpty(option.AlternativeBase) && language.AlternativeBase != null ? language.AlternativeBase[option.AlternativeBase] : null;
+
+        if (language.UnitExceptions is Dictionary<double, string> unitExceptionDict && unitExceptionDict.ContainsKey(n)) return unitExceptionDict[n];
+        if (alternativeBaseCardinals is Dictionary<double, string> alternativeBaseCardinalsDict && alternativeBaseCardinalsDict.ContainsKey(n)) return alternativeBaseCardinalsDict[n];
+        if (baseCardinals.ContainsKey(n) && !string.IsNullOrEmpty(baseCardinals[n])) return baseCardinals[n];
+        if (n < 100) return HandleSmallerThan100(n, language, baseCardinals, alternativeBaseCardinals, option);
+
+        var m = n % 100;
+        var ret = new List<string>();
+        if (m != 0)
+        {
+            if (option.NoAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
+            else ret.Add(language.UnitSeparator + m.WrittenNumber(option));
+        }
+
+        double firstSignificant = 0;
+        var len = units.Count;
+        for (var i = 0; i < len; i++)
+        {
+            var r = n / scale[i];
+            long divideBy;
+
+            if (i == len - 1) divideBy = 1000000;
+            else divideBy = scale[i + 1] / scale[i];
+
+            r %= divideBy;
+
+            if (r == 0) continue;
+            firstSignificant = scale[i];
+
             {
-                var rawUnits = dictLanguageUnits;
-                scale = new List<double>(dictLanguageUnits.Keys);
-                var rawScale = new List<double>();
-                foreach (var i in scale.Select((value, i) => new { i, value }))
+                if (units[i] is LanguageUnit languageUnit && languageUnit.UseBaseInstead.HasValue && languageUnit.UseBaseInstead.Value)
                 {
-                    var value = i.value;
-                    var index = i.i;
-                    rawScale.Add(Math.Pow(10, Convert.ToInt32(value)));
+                    var shouldUseBaseException =
+                        languageUnit.UseBaseException!.IndexOf(r) > -1 &&
+                        (!languageUnit.UseBaseExceptionWhenNoTrailingNumbers.HasValue ||
+                         !languageUnit.UseBaseExceptionWhenNoTrailingNumbers.Value ||
+                         (i == 0 && ret.Any()));
+                    if (!shouldUseBaseException)
+                        ret.Add(alternativeBaseCardinals != null &&
+                                alternativeBaseCardinals.ContainsKey(r * scale[i])
+                            ? alternativeBaseCardinals[r * scale[i]]
+                            : baseCardinals[r * scale[i]]);
+                    else
+                        ret.Add(r > 1 && !string.IsNullOrEmpty(languageUnit.Plural)
+                            ? languageUnit.Plural
+                            : languageUnit.Singular!);
+                    continue;
                 }
-
-                foreach (var (key, value) in dictLanguageUnits) units.Add(dictLanguageUnits[key]);
-                scale = rawScale;
-            }
-            else if (language.Units is List<object> languageObjectUnits)
-            {
-                units.AddRange(languageObjectUnits);
-            }
-            else if (language.Units is List<string> languageStringUnits)
-            {
-                units.AddRange(languageStringUnits);
-            }
-            else
-            {
-                throw new ArgumentException(nameof(language.Units));
             }
 
-            var baseCardinals = language.Base;
-            var alternativeBaseCardinals =
-                !string.IsNullOrEmpty(option.AlternativeBase) && language.AlternativeBase != null
-                    ? language.AlternativeBase[option.AlternativeBase]
-                    : null;
+            var str = string.Empty;
 
-            if (language.UnitExceptions is Dictionary<double, string> unitExceptionDict && unitExceptionDict.ContainsKey(n)) return unitExceptionDict[n];
-            if (alternativeBaseCardinals is Dictionary<double, string> alternativeBaseCardinalsDict && alternativeBaseCardinalsDict.ContainsKey(n)) return alternativeBaseCardinalsDict[n];
-            if (baseCardinals.ContainsKey(n) && !string.IsNullOrEmpty(baseCardinals[n])) return baseCardinals[n];
-            if (n < 100) return HandleSmallerThan100(n, language, baseCardinals, alternativeBaseCardinals, option);
-
-            var m = n % 100;
-            var ret = new List<string>();
-            if (m != 0)
             {
-                if (option.NoAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
-                else ret.Add(language.UnitSeparator + m.WrittenNumber(option));
-            }
-
-            double firstSignificant = 0;
-            var len = units.Count;
-            for (var i = 0; i < len; i++)
-            {
-                var r = Math.Floor(n / scale[i]);
-                double divideBy;
-
-                if (i == len - 1) divideBy = 1000000;
-                else divideBy = scale[i + 1] / scale[i];
-
-                r %= divideBy;
-
-                if (r == 0) continue;
-                firstSignificant = scale[i];
-
+                if (units[i] is string strUnit)
                 {
-                    if (units[i] is LanguageUnit languageUnit && languageUnit.UseBaseInstead.HasValue &&
-                        languageUnit.UseBaseInstead.Value)
+                    str = strUnit;
+                }
+                else if (units[i] is LanguageUnit languageUnit)
+                {
+                    if ((r == 1 || (languageUnit.UseSingularEnding.HasValue &&
+                                    languageUnit.UseSingularEnding.Value && r % 10 == 1
+                                    && (languageUnit.AvoidEndingRules == null ||
+                                        languageUnit.AvoidEndingRules.IndexOf(r) < 0))) &&
+                        !string.IsNullOrEmpty(languageUnit.Singular))
                     {
-                        var shouldUseBaseException =
-                            languageUnit.UseBaseException!.IndexOf(r) > -1 &&
-                            (!languageUnit.UseBaseExceptionWhenNoTrailingNumbers.HasValue ||
-                             !languageUnit.UseBaseExceptionWhenNoTrailingNumbers.Value ||
-                             (i == 0 && ret.Any()));
-                        if (!shouldUseBaseException)
-                            ret.Add(alternativeBaseCardinals != null &&
-                                    alternativeBaseCardinals.ContainsKey(r * scale[i])
-                                ? alternativeBaseCardinals[r * scale[i]]
-                                : baseCardinals[r * scale[i]]);
-                        else
-                            ret.Add(r > 1 && !string.IsNullOrEmpty(languageUnit.Plural)
-                                ? languageUnit.Plural
-                                : languageUnit.Singular!);
-                        continue;
+                        str = languageUnit.Singular;
+                    }
+                    else if (!string.IsNullOrEmpty(languageUnit.Few) && ((r > 1 && r < 5) ||
+                                                                         (languageUnit.UseFewEnding.HasValue &&
+                                                                          languageUnit.UseFewEnding.Value &&
+                                                                          r % 10 > 1 && r % 10 < 5
+                                                                          && (languageUnit.AvoidEndingRules ==
+                                                                              null || languageUnit.AvoidEndingRules
+                                                                                  .IndexOf(r) < 0))))
+                    {
+                        str = languageUnit.Few;
+                    }
+                    else
+                    {
+                        str = !string.IsNullOrEmpty(languageUnit.Plural) &&
+                              (!languageUnit.AvoidInNumberPlural.HasValue ||
+                               !languageUnit.AvoidInNumberPlural.Value || m == 0)
+                            ? languageUnit.Plural
+                            : languageUnit.Singular!;
+
+                        // Languages with dual
+                        str = r == 2 && !string.IsNullOrEmpty(languageUnit.Dual) ? languageUnit.Dual : str;
+
+                        // "restrictedPlural" : use plural only for 3 to 10
+                        str = r > 10 && languageUnit.RestrictedPlural.HasValue &&
+                              languageUnit.RestrictedPlural.Value
+                            ? languageUnit.Singular!
+                            : str;
                     }
                 }
-
-                var str = string.Empty;
-
-                {
-                    if (units[i] is string strUnit)
-                    {
-                        str = strUnit;
-                    }
-                    else if (units[i] is LanguageUnit languageUnit)
-                    {
-                        if ((r == 1 || (languageUnit.UseSingularEnding.HasValue &&
-                                        languageUnit.UseSingularEnding.Value && r % 10 == 1
-                                        && (languageUnit.AvoidEndingRules == null ||
-                                            languageUnit.AvoidEndingRules.IndexOf(r) < 0))) &&
-                            !string.IsNullOrEmpty(languageUnit.Singular))
-                        {
-                            str = languageUnit.Singular;
-                        }
-                        else if (!string.IsNullOrEmpty(languageUnit.Few) && ((r > 1 && r < 5) ||
-                                                                             (languageUnit.UseFewEnding.HasValue &&
-                                                                              languageUnit.UseFewEnding.Value &&
-                                                                              r % 10 > 1 && r % 10 < 5
-                                                                              && (languageUnit.AvoidEndingRules ==
-                                                                                  null || languageUnit.AvoidEndingRules
-                                                                                      .IndexOf(r) < 0))))
-                        {
-                            str = languageUnit.Few;
-                        }
-                        else
-                        {
-                            str = !string.IsNullOrEmpty(languageUnit.Plural) &&
-                                  (!languageUnit.AvoidInNumberPlural.HasValue ||
-                                   !languageUnit.AvoidInNumberPlural.Value || m == 0)
-                                ? languageUnit.Plural
-                                : languageUnit.Singular!;
-
-                            // Languages with dual
-                            str = r == 2 && !string.IsNullOrEmpty(languageUnit.Dual) ? languageUnit.Dual : str;
-
-                            // "restrictedPlural" : use plural only for 3 to 10
-                            str = r > 10 && languageUnit.RestrictedPlural.HasValue &&
-                                  languageUnit.RestrictedPlural.Value
-                                ? languageUnit.Singular!
-                                : str;
-                        }
-                    }
-                }
-
-                {
-                    if (
-                        units[i] is LanguageUnit languageUnit &&
-                        languageUnit.AvoidPrefixException != null &&
-                        languageUnit.AvoidPrefixException.Any() &&
-                        languageUnit.AvoidPrefixException.IndexOf(r) > -1
-                    )
-                    {
-                        ret.Add(str);
-                        continue;
-                    }
-                }
-                string number;
-                if (language.UnitExceptions != null &&
-                    r < language.UnitExceptions.Count &&
-                    language.UnitExceptions.ContainsKey(r))
-                    number = language.UnitExceptions[r];
-                else if (units[i] is string)
-                    number = WrittenNumber(
-                        r,
-                        new Option
-                        {
-                            NoAnd = !(language.AndException.HasValue &&
-                                      language.AndException.Value) && true,
-                            AlternativeBase = null,
-                            Lang = option.Lang
-                        });
-                else if (units[i] is LanguageUnit languageUnitCheck)
-                    number = WrittenNumber(
-                        r,
-                        new Option
-                        {
-                            NoAnd = !((language.AndException.HasValue &&
-                                       language.AndException.Value) ||
-                                      (languageUnitCheck.AndException.HasValue &&
-                                       languageUnitCheck.AndException.Value)) && true,
-                            AlternativeBase = languageUnitCheck.UseAlternativeBase,
-                            Lang = option.Lang
-                        });
-                else number = string.Empty;
-                n -= r * scale[i];
-                ret.Add(number + " " + str);
             }
 
-            var firstSignificantN = firstSignificant * Math.Floor(n / firstSignificant);
-            var rest = n - firstSignificantN;
-
-            if (language.AndWhenTrailing == true && firstSignificant != 0 && 0 < rest && ret[0].IndexOf(language.UnitSeparator) != 0)
             {
-                var a = new List<string>
+                if (
+                    units[i] is LanguageUnit languageUnit &&
+                    languageUnit.AvoidPrefixException != null &&
+                    languageUnit.AvoidPrefixException.Any() &&
+                    languageUnit.AvoidPrefixException.IndexOf(r) > -1
+                )
+                {
+                    ret.Add(str);
+                    continue;
+                }
+            }
+            string number;
+            if (language.UnitExceptions != null &&
+                r < language.UnitExceptions.Count &&
+                language.UnitExceptions.ContainsKey(r))
+                number = language.UnitExceptions[r];
+            else if (units[i] is string)
+                number = WrittenNumber(
+                    r,
+                    new Option
+                    {
+                        NoAnd = !(language.AndException.HasValue &&
+                                  language.AndException.Value) && true,
+                        AlternativeBase = null,
+                        Lang = option.Lang
+                    });
+            else if (units[i] is LanguageUnit languageUnitCheck)
+                number = WrittenNumber(
+                    r,
+                    new Option
+                    {
+                        NoAnd = !((language.AndException.HasValue &&
+                                   language.AndException.Value) ||
+                                  (languageUnitCheck.AndException.HasValue &&
+                                   languageUnitCheck.AndException.Value)) && true,
+                        AlternativeBase = languageUnitCheck.UseAlternativeBase,
+                        Lang = option.Lang
+                    });
+            else number = string.Empty;
+            n -= r * scale[i];
+            ret.Add(number + " " + str);
+        }
+
+        var firstSignificantN = firstSignificant * Math.Floor(n / firstSignificant);
+        var rest = n - firstSignificantN;
+
+        if (language.AndWhenTrailing == true && firstSignificant != 0 && 0 < rest && ret[0].IndexOf(language.UnitSeparator) != 0)
+        {
+            var a = new List<string>
                 {
                     ret[0],
                     Regex.Replace(language.UnitSeparator, @"\s+", string.Empty)
                 };
-                ret.RemoveAt(0);
-                a.AddRange(ret);
-                ret = a;
-            }
+            ret.RemoveAt(0);
+            a.AddRange(ret);
+            ret = a;
+        }
 
-            if (!string.IsNullOrEmpty(language.AllSeparator))
-            {
-                for (var j = 0; j < ret.Count - 1; j++)
-                {
-                    ret[j] = language.AllSeparator + ret[j];
-                }
-            }
-            ret.Reverse();
-            var result = string.Join(" ", ret.ToArray());
-            return result;
-        }
-        catch (Exception e)
+        if (!string.IsNullOrEmpty(language.AllSeparator))
         {
-            Console.WriteLine(e);
-            throw;
+            for (var j = 0; j < ret.Count - 1; j++)
+            {
+                ret[j] = language.AllSeparator + ret[j];
+            }
         }
+        ret.Reverse();
+        var result = string.Join(" ", ret.ToArray());
+        return result;
     }
 
-    private static string HandleSmallerThan100(double n, Language language, Dictionary<double, string>? baseCardinals, Dictionary<double, string>? alternativeBaseCardinals, Option options)
+    private static string HandleSmallerThan100(long n, Language language, Dictionary<double, string>? baseCardinals, Dictionary<double, string>? alternativeBaseCardinals, Option options)
     {
-        var dec = Math.Floor(n / 10) * 10;
+        var dec = n / 10 * 10;
         var unit = n - dec;
 
         var baseValue = alternativeBaseCardinals != null && alternativeBaseCardinals.ContainsKey(dec)

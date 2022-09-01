@@ -42,7 +42,7 @@ public static class EnglishIndianLanguage
                 [80] = "eighty",
                 [90] = "ninety"
             },
-            units: new Dictionary<double, string>
+            units: new Dictionary<long, string>
             {
                 [2] = "hundred",
                 [3] = "thousand",

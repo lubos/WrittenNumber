@@ -1,4 +1,4 @@
-﻿namespace NumbersToWords.Models;
+﻿namespace WrittenNumber.Models;
 
 public class AzerbaijaniLanguage
 {

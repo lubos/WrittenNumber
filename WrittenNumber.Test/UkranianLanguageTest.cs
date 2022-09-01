@@ -1,6 +1,6 @@
-﻿using NumbersToWords.Models;
+﻿using WrittenNumber.Models;
 
-namespace NumbersToWords.Test;
+namespace WrittenNumber.Test;
 
 public class UkranianLanguageTest
 {

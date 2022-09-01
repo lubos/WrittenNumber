@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using NumbersToWords.Models;
+using WrittenNumber.Models;
 
-namespace NumbersToWords;
+namespace WrittenNumber;
 
 public static class NumberExtension
 {

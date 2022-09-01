@@ -45,10 +45,10 @@ public static class NumberExtension
 
     public static string WrittenNumber(this long n, Option option)
     {
-        return WrittenNumber(Convert.ToInt64(n), option, null);
+        return WrittenNumber(Convert.ToInt64(n), option, false, null);
     }
 
-    private static string WrittenNumber(this long n, Option option, Dictionary<long, string>? alternativeBase)
+    private static string WrittenNumber(this long n, Option option, bool noAnd, Dictionary<long, string>? alternativeBase)
     {
         if (n < 0) return string.Empty;
 
@@ -113,7 +113,7 @@ public static class NumberExtension
         var ret = new List<string>();
         if (m != 0)
         {
-            if (option.NoAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
+            if (noAnd && !(language.AndException.HasValue && language.AndException.Value)) ret.Add(m.WrittenNumber(option));
             else ret.Add(language.UnitSeparator + m.WrittenNumber(option));
         }
 
@@ -222,17 +222,18 @@ public static class NumberExtension
                     r,
                     new Option
                     {
-                        NoAnd = !(language.AndException.HasValue && language.AndException.Value),
                         Lang = option.Lang
-                    });
+                    },
+                    !(language.AndException.HasValue && language.AndException.Value),
+                    null);
             else if (units[i] is LanguageUnit languageUnitCheck)
                 number = WrittenNumber(
                     r,
                     new Option
                     {
-                        NoAnd = !((language.AndException.HasValue && language.AndException.Value) || (languageUnitCheck.AndException.HasValue && languageUnitCheck.AndException.Value)),
                         Lang = option.Lang
                     },
+                    !((language.AndException.HasValue && language.AndException.Value) || (languageUnitCheck.AndException.HasValue && languageUnitCheck.AndException.Value)),
                     languageUnitCheck.AlternativeBase);
             else number = string.Empty;
             n -= r * scale[i];
